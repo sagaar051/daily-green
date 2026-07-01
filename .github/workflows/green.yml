@@ -1,0 +1,26 @@
+name: Daily Green Contribution
+
+on:
+  schedule:
+    # This runs the script every day at 12:00 PM UTC (5:30 PM IST)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Allows you to trigger it manually anytime
+
+jobs:
+  make-contribution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make a small change to README
+        run: |
+          echo "Last automated contribution: $(date)" >> README.md
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "chore: automated daily contribution"
+          git push
